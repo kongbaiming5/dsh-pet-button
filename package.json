@@ -1,0 +1,59 @@
+{
+  "name": "dsh-pet-button",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "桌面桌宠开关小部件：在桌面上放一张小卡片，一键开/关 dsh-pet，Harness 没开时还能顺手把它拉起来。",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-ui-plugin-manager"
+      ]
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "lib",
+    "assets",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "author": "kongbaiming5",
+  "license": "MIT",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "desktop-pet",
+    "widget",
+    "macos",
+    "dsh-pet"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kongbaiming5/dsh-pet-button.git"
+  },
+  "homepage": "https://github.com/kongbaiming5/dsh-pet-button#readme",
+  "bugs": {
+    "url": "https://github.com/kongbaiming5/dsh-pet-button/issues"
+  }
+}
