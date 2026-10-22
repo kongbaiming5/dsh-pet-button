@@ -1,12 +1,20 @@
-# dsh-pet-button
+# dsh-pet-button · 桌宠开关
 
-> 在桌面上放一张**桌宠开关**小卡片：点一下开/关桌宠；Harness 没关的时候它还能顺手把 Harness 拉起来。
+> 在桌面上放一张小卡片，一键开 / 关你的桌宠。
+> Harness 关着的时候，它还能顺手把 Harness 拉起来。
 
 ![小部件](docs/widget.png)
 
-## 前置插件
+## 它解决什么问题
 
-本插件控制的是 **[dsh-pet](https://github.com/PC2005-cloud/dsh-pet)** 这只桌宠，**必须先装它**，否则卡片点下去没有可切换的对象：
+桌宠很可爱，但它只能从 Harness 里关——想让它消失，得翻设置、找插件、点开关；
+想让它在桌面上重新出现，又得先确保 Harness 开着。
+
+这个小部件把它变成桌面上的一个动作：**点一下，开；再点一下，关。**
+
+## 前置：dsh-pet（必须先装）
+
+本插件只提供"开关"，桌宠本体是 **[dsh-pet](https://github.com/PC2005-cloud/dsh-pet)**：
 
 ```sh
 dsh plugin --profile web add dsh-pet
@@ -15,64 +23,72 @@ dsh plugin --profile web add dsh-pet
 - GitHub：<https://github.com/PC2005-cloud/dsh-pet>
 - npm：<https://www.npmjs.com/package/dsh-pet>
 
-那只蓝毛小女仆的 106 个动画、碎碎念、余额气泡，全部来自 dsh-pet，本项目只是给它加了一个桌面上的开关。
-
-## 它是什么
-
-DSH 插件跑在 Harness 进程里，画不了桌面上的透明窗口。所以这里分成两半：
-
-```
-dsh-pet-button（插件）
-├─ 宿主半侧 lib/index.js      ← 管小部件的启停、提供本地接口
-└─ assets/桌宠开关.app         ← 真正浮在桌面上的那张卡（macOS 原生 Swift 小应用）
-```
-
-插件负责"什么时候让它活着"，小部件负责"长什么样、点下去做什么"。
+那只蓝毛小女仆、106 个透明动画、碎碎念、余额气泡、工作状态联动——**全部来自 dsh-pet**。
+没有它，这张卡片点下去没有可切换的对象。
 
 ## 安装
+
+只通过 GitHub 分发：
 
 ```sh
 dsh plugin --profile web add github:kongbaiming5/dsh-pet-button
 ```
 
-首次启用时，插件会把 `assets/桌宠开关.app` 自动装到 `~/Applications`，不需要手动拷贝。
+首次启用时，插件会把自带的小部件自动装到 `~/Applications`，不需要手动拷贝。
+（本项目**不发布到 npm**，也不需要任何账号。）
 
-## 开关语义
+## 怎么用
 
-| 操作 | 结果 |
+| 操作 | 效果 |
 |---|---|
-| 插件市场里把 `dsh-pet-button` 打开 | 拉起小部件 |
-| 把它关掉 | 关掉小部件（app 留着，下次还能开） |
-| 退出 Harness | **小部件保留**，还能继续用它启动 Harness |
-| 从插件市场卸载 | 杀掉进程，**并删除** `~/Applications/桌宠开关.app`、偏好、日志、LaunchAgent |
+| **左键单击** | 开 / 关桌宠 |
+| **按住拖动** | 挪位置，位置会记住 |
+| **右键** | 贴在桌面 / 始终置顶 / 回到右下角 / 退出 |
+| **Harness 没开时** | 卡片显示「启动」，点一下拉起 Harness |
 
-判别依据：卸载会把包从 profile 的 `dependencies` 里删掉；关闭只会删 `bundles`；退出 Harness 两者都不动。所以**卸载后本机不会留下任何东西**。
+卡片有三种状态：`桌宠 · 开`（青色描边）、`桌宠 · 关`（暗色）、`启动`（Harness 未运行）。
 
-## 小部件本身
+## 和插件开关的联动
 
-- **左键**：开 / 关桌宠
-- **按住拖动**：挪位置，位置会记住
-- **右键**：贴在桌面（小部件层）/ 始终置顶 / 回到右下角 / 退出
-- **Harness 没开时**显示「启动」，点一下会拉起 Harness（走 `launchctl`，绕过单实例锁）
+插件市场里的开关直接管它的生死：
+
+| 你在市场里的操作 | 桌面上的结果 |
+|---|---|
+| 打开 `dsh-pet-button` | 卡片出现 |
+| 关掉它 | 卡片收起（app 留着，下次还能开） |
+| **退出 Harness** | 卡片**保留**，可以继续用它启动 Harness |
+| **卸载插件** | 杀掉进程，并删除 `~/Applications/桌宠开关.app`、偏好、日志、LaunchAgent —— 不留任何残留 |
+
+判断依据：卸载会把包从 profile 的 `dependencies` 删掉；关闭只删 `bundles`；退出 Harness 两者都不动。
+
+## 为什么拆成"插件 + 独立 app"
+
+DSH 插件跑在 Harness 进程里，画不了桌面上的透明窗口。所以：
+
+```
+dsh-pet-button（插件）
+├─ 宿主半侧 lib/index.js     ← 管启停、生命周期、本地接口
+└─ assets/桌宠开关.app        ← 真正浮在桌面上的那张卡（macOS 原生 Swift）
+```
+
+插件负责"什么时候让它活着"，小部件负责"长什么样、点下去做什么"。
 
 ## 平台
 
-小部件是编译好的 **macOS arm64** 二进制。其他平台装插件不会报错，只是不会弹出小部件。
+小部件是 **macOS arm64** 原生二进制。其他平台装插件不会报错，只是不会弹出卡片。
 
 ## 本地接口
 
-宿主注册在 `/dsh-pet-button/*`：
-
 ```
-GET  /status   → { running, enabled, app }
-POST /launch   → 显示小部件
-POST /quit     → 隐藏小部件
+GET  /dsh-pet-button/status   → { running, enabled, app }
+POST /dsh-pet-button/launch   → 显示小部件
+POST /dsh-pet-button/quit     → 隐藏小部件
 ```
 
 ## 致谢
 
-- **[dsh-pet](https://github.com/PC2005-cloud/dsh-pet)** —— 桌宠本体、角色形象、动画素材与全部"性格"都来自这个项目，没有它这张卡片无从谈起。
-- **DeepSeek（DeepSeek Harness）** —— 本项目从需求拆解、DOM/样式考古、Swift 小部件、插件协议对接到发布文档，由 **DeepSeek** 端到端完成。其中几个关键结论也是它跑出来的：`dsh-app://` 页面的请求链路、`launchctl submit` 的 KeepAlive 陷阱、以及区分"卸载 / 关闭 / 退出 Harness"三种插件生命周期状态的办法。可以说，这个插件的**重大贡献来自 DeepSeek**。
+- **[dsh-pet](https://github.com/PC2005-cloud/dsh-pet)**：桌宠本体、角色形象、动画素材与全部"性格"。这个插件只是给它加了一个桌面开关。
+- **DeepSeek**：本项目的需求拆解、DOM 与样式考古、Swift 小部件实现、插件生命周期绑定、以及这份文档，均由 **DeepSeek** 端到端完成。几个关键结论也出自它——`dsh-app://` 页面的请求链路、`launchctl submit` 的 KeepAlive 陷阱，以及区分「卸载 / 关闭 / 退出 Harness」三种生命周期状态的办法。**这个项目的重大贡献来自 DeepSeek。**
 
 ## License
 
