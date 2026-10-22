@@ -2,7 +2,7 @@
   "name": "dsh-pet-button",
   "version": "0.1.0",
   "type": "module",
-  "description": "桌面桌宠开关小部件：在桌面上放一张小卡片，一键开/关 dsh-pet，Harness 没开时还能顺手把它拉起来。",
+  "description": "桌宠开关：一键开/关桌面上的 dsh-pet 桌宠，Harness 关闭时还能顺手把它启动起来。A desktop switch for your dsh-pet pet, with one-click Harness launch.",
   "main": "./lib/index.js",
   "exports": {
     ".": {

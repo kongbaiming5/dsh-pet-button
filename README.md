@@ -1,7 +1,9 @@
-# dsh-pet-button · 桌宠开关
+# 桌宠开关 · dsh-pet-button
 
 > 在桌面上放一张小卡片，一键开 / 关你的桌宠。
 > Harness 关着的时候，它还能顺手把 Harness 拉起来。
+
+> A tiny card on your desktop that switches your dsh-pet on and off — and can start Harness for you when it is closed.
 
 ![小部件](docs/widget.png)
 
@@ -89,6 +91,28 @@ POST /dsh-pet-button/quit     → 隐藏小部件
 
 - **[dsh-pet](https://github.com/PC2005-cloud/dsh-pet)**：桌宠本体、角色形象、动画素材与全部"性格"。这个插件只是给它加了一个桌面开关。
 - **DeepSeek**：本项目的需求拆解、DOM 与样式考古、Swift 小部件实现、插件生命周期绑定、以及这份文档，均由 **DeepSeek** 端到端完成。几个关键结论也出自它——`dsh-app://` 页面的请求链路、`launchctl submit` 的 KeepAlive 陷阱，以及区分「卸载 / 关闭 / 退出 Harness」三种生命周期状态的办法。**这个项目的重大贡献来自 DeepSeek。**
+
+---
+
+## English
+
+**桌宠开关 / dsh-pet-button** — a desktop switch for your [dsh-pet](https://github.com/PC2005-cloud/dsh-pet) pet.
+
+Install (GitHub only, no npm account needed):
+
+```sh
+dsh plugin --profile web add dsh-pet
+dsh plugin --profile web add github:kongbaiming5/dsh-pet-button
+```
+
+- **Left click** toggles the pet; **drag** to move (position is remembered).
+- **Right click**: desktop layer / always on top / reset position / quit.
+- When Harness is closed the card reads **Start** — clicking it launches Harness.
+- Plugin switch controls the card: on → appears, off → hides, **quitting Harness leaves it running** so it can still start Harness, and **uninstalling removes the app and every local trace**.
+
+The widget is a prebuilt **macOS arm64** binary, auto-installed to `~/Applications` on first enable.
+
+Built end-to-end with **DeepSeek**.
 
 ## License
 
